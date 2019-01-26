@@ -38,11 +38,11 @@ public final class MainVC: UIViewController {
             CellData(title: "Section 4", sectionData: AssemblyPickerData(date: "Jun 19, 1992", time: "9:00"), cellType: CellType.picker),
             CellData(title: "Section 5", sectionData: AssemblyPickerData(date: "Jun 19, 1992", time: "9:00"), cellType: CellType.picker),
             CellData(sectionData: nil, cellType: CellType.divider),
-            CellData(sectionData: BuildingSiteData(title: "KM-Enterfung zue NL"), cellType: CellType.normal, isEnabled: false),
+            CellData(sectionData: BuildingSiteData(title: "Items"), cellType: CellType.normal, isEnabled: false),
             CellData(sectionData: nil, cellType: CellType.divider),
-            CellData(sectionData: BuildingSiteData(title: "1. KM-Enterfung zue NL"), cellType: CellType.normal, isEnabled: false),
-            CellData(sectionData: BuildingSiteData(title: "2. KM-Enterfung zue NL"), cellType: CellType.normal, isEnabled: false),
-            CellData(sectionData: BuildingSiteData(title: "3. KM-Enterfung zue NL"), cellType: CellType.normal, isEnabled: false)
+            CellData(sectionData: BuildingSiteData(title: "1. Item"), cellType: CellType.normal, isEnabled: false),
+            CellData(sectionData: BuildingSiteData(title: "2. Item"), cellType: CellType.normal, isEnabled: false),
+            CellData(sectionData: BuildingSiteData(title: "3. Item"), cellType: CellType.normal, isEnabled: false)
         ]
         
         self.tableView.register(
