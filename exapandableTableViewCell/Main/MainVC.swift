@@ -109,29 +109,14 @@ extension MainVC: UITableViewDataSource {
         
         switch  self.tableViewData[indexPath.section].cellType{
         case .header, .group:
-            guard
-                let cell: BuildingSiteCell = tableView.dequeueReusableCell(withIdentifier: BuildingSiteCell.identifier) as? BuildingSiteCell
-            else {
-                return UITableViewCell()
-            }
-            
+            let cell: BuildingSiteCell = self.buildingSiteCellBuilder()
             cell.selectionStyle = .none
             cell.assemblySwitch.addTarget(self, action: #selector(MainVC.switchValueChanged), for: UIControl.Event.valueChanged)
-            
-            
             return cell
-            
         case .normal:
-            guard
-                let cell: HeaderViewCell = tableView.dequeueReusableCell(withIdentifier: HeaderViewCell.identifier) as? HeaderViewCell
-            else {
-                return UITableViewCell()
-            }
-            
+            let cell: HeaderViewCell = self.headerCellBuilder()
             cell.selectionStyle = .none
-            
             cell.isEnabled(self.tableViewData[indexPath.section].isEnabled)
-            
             
             guard
                 let model: BuildingSiteData = self.tableViewData[indexPath.section].sectionData as? BuildingSiteData
@@ -143,24 +128,14 @@ extension MainVC: UITableViewDataSource {
             
             return cell
         case .divider:
-            guard
-                let cell: DividerCell = tableView.dequeueReusableCell(withIdentifier: DividerCell.identifier) as? DividerCell
-            else {
-                return UITableViewCell()
-            }
-            
+            let cell: DividerCell = self.dividerCellBuilder()
             cell.selectionStyle = .none
             cell.isUserInteractionEnabled = false
-            
             return cell
         case .picker:
             switch indexPath.row == 0 {
             case true:
-                guard
-                    let cell: HeaderViewCell = tableView.dequeueReusableCell(withIdentifier: HeaderViewCell.identifier) as? HeaderViewCell
-                else {
-                    return UITableViewCell()
-                }
+                let cell: HeaderViewCell = self.headerCellBuilder()
                 
                 guard
                     let model: AssemblyPickerData = self.tableViewData[indexPath.section].sectionData as? AssemblyPickerData
@@ -172,11 +147,7 @@ extension MainVC: UITableViewDataSource {
                 
                 return cell
             case false:
-                guard
-                    let cell: AssemblyCell = tableView.dequeueReusableCell(withIdentifier: AssemblyCell.identifier) as? AssemblyCell
-                else {
-                    return UITableViewCell()
-                }
+                let cell: AssemblyCell = self.assemblyCellBuilder()
                 
                 return cell
             }
@@ -248,3 +219,55 @@ extension MainVC {
         self.tableView.reloadData()
     }
 }
+
+// MARK: - Helper Functions
+
+extension MainVC {
+    
+    private func buildingSiteCellBuilder() -> BuildingSiteCell {
+        guard
+            let cell: BuildingSiteCell = self.tableView.dequeueReusableCell(
+                withIdentifier: BuildingSiteCell.identifier
+            ) as? BuildingSiteCell
+        else {
+                return BuildingSiteCell()
+        }
+        return cell
+    }
+    
+    private func headerCellBuilder() -> HeaderViewCell {
+        guard
+            let cell: HeaderViewCell = self.tableView.dequeueReusableCell(
+                withIdentifier: HeaderViewCell.identifier
+            ) as? HeaderViewCell
+        else {
+                return HeaderViewCell()
+        }
+        return cell
+    }
+    
+    
+    private func dividerCellBuilder() -> DividerCell {
+        guard
+            let cell: DividerCell = self.tableView.dequeueReusableCell(
+                withIdentifier: DividerCell.identifier
+            ) as? DividerCell
+        else {
+            return DividerCell()
+        }
+        return cell
+    }
+    
+    private func assemblyCellBuilder() -> AssemblyCell {
+        guard
+            let cell: AssemblyCell = self.tableView.dequeueReusableCell(
+                withIdentifier: AssemblyCell.identifier
+            ) as? AssemblyCell
+        else {
+            return AssemblyCell()
+        }
+        return cell
+    }
+    
+}
+
