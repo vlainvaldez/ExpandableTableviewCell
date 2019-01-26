@@ -9,7 +9,7 @@
 import UIKit
 import SnapKit
 
-public final class HeaderViewCell: UITableViewCell {
+public final class HeaderViewCell: UITableViewCell, MainCell {
     
     // MARK: Subviews
     public let titleLabel: UILabel = {
@@ -86,7 +86,7 @@ public final class HeaderViewCell: UITableViewCell {
 
 extension HeaderViewCell {
     
-    public static let identifier: String = "HeaderViewCell"
+    public static var identifier: String = "HeaderViewCell"
     
     public func configure(title: String, date: String = "", time: String) {
         self.titleLabel.text = title

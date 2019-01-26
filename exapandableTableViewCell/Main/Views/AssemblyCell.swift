@@ -9,7 +9,7 @@
 import UIKit
 import SnapKit
 
-public final class AssemblyCell: UITableViewCell {
+public final class AssemblyCell: UITableViewCell, MainCell {
     
     // MARK: Subviews
     public let titleLabel: UILabel = {
@@ -59,5 +59,5 @@ public final class AssemblyCell: UITableViewCell {
 
 // MARK: Public API
 extension AssemblyCell {
-    public static let identifier: String = "AssemblyCell"
+    public static var identifier: String = "AssemblyCell"
 }

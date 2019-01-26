@@ -9,7 +9,7 @@
 import UIKit
 import SnapKit
 
-public final class BuildingSiteCell: UITableViewCell {
+public final class BuildingSiteCell: UITableViewCell, MainCell {
     
     // MARK: Subviews
     public let titleLabel: UILabel = {
@@ -53,6 +53,6 @@ public final class BuildingSiteCell: UITableViewCell {
 // MARK: Public API
 extension BuildingSiteCell {
     
-    public static let identifier: String = "BuildingSiteCell"
+    public static var identifier: String = "BuildingSiteCell"
     
 }

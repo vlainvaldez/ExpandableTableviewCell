@@ -8,7 +8,7 @@
 
 import UIKit
 
-public final class DividerCell: UITableViewCell {
+public final class DividerCell: UITableViewCell, MainCell {
     
     // MARK: Initializers
     public override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
@@ -23,5 +23,5 @@ public final class DividerCell: UITableViewCell {
 
 // Public API
 extension DividerCell {
-    public static let identifier: String = "DividerCell"
+    public static var identifier: String = "DividerCell"
 }
