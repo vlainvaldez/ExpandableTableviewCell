@@ -14,4 +14,5 @@ enum CellType {
     case divider
     case group
     case normal
+    case textField
 }

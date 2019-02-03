@@ -42,7 +42,32 @@ public final class MainVC: UIViewController {
             CellData(sectionData: nil, cellType: CellType.divider),
             CellData(sectionData: BuildingSiteData(title: "1. Item"), cellType: CellType.normal, isEnabled: false),
             CellData(sectionData: BuildingSiteData(title: "2. Item"), cellType: CellType.normal, isEnabled: false),
-            CellData(sectionData: BuildingSiteData(title: "3. Item"), cellType: CellType.normal, isEnabled: false)
+            CellData(sectionData: BuildingSiteData(title: "3. Item"), cellType: CellType.normal, isEnabled: false),
+            CellData(sectionData: BuildingSiteData(title: "3. Item"), cellType: CellType.normal, isEnabled: false),
+            CellData(sectionData: nil, cellType: CellType.divider),
+            CellData(sectionData: TextFieldData(text: ""), cellType: CellType.textField, isEnabled: false),
+            CellData(sectionData: nil, cellType: CellType.divider),
+            CellData(sectionData: TextFieldData(text: ""), cellType: CellType.textField, isEnabled: false),
+            CellData(sectionData: nil, cellType: CellType.divider),
+            CellData(sectionData: TextFieldData(text: ""), cellType: CellType.textField, isEnabled: false),
+            CellData(sectionData: nil, cellType: CellType.divider),
+            CellData(sectionData: TextFieldData(text: ""), cellType: CellType.textField, isEnabled: false),
+            CellData(sectionData: nil, cellType: CellType.divider),
+            CellData(sectionData: TextFieldData(text: ""), cellType: CellType.textField, isEnabled: false),
+            CellData(sectionData: nil, cellType: CellType.divider),
+            CellData(sectionData: TextFieldData(text: ""), cellType: CellType.textField, isEnabled: false),
+            CellData(sectionData: nil, cellType: CellType.divider),
+            CellData(sectionData: TextFieldData(text: ""), cellType: CellType.textField, isEnabled: false),
+            CellData(sectionData: nil, cellType: CellType.divider),
+            CellData(sectionData: TextFieldData(text: ""), cellType: CellType.textField, isEnabled: false),
+            CellData(sectionData: nil, cellType: CellType.divider),
+            CellData(sectionData: TextFieldData(text: ""), cellType: CellType.textField, isEnabled: false),
+            CellData(sectionData: nil, cellType: CellType.divider),
+            CellData(sectionData: TextFieldData(text: ""), cellType: CellType.textField, isEnabled: false),
+            CellData(sectionData: nil, cellType: CellType.divider),
+            CellData(sectionData: TextFieldData(text: ""), cellType: CellType.textField, isEnabled: false),
+            CellData(sectionData: nil, cellType: CellType.divider),
+            CellData(sectionData: TextFieldData(text: ""), cellType: CellType.textField, isEnabled: false)
         ]
         
         self.tableView.register(
@@ -65,8 +90,29 @@ public final class MainVC: UIViewController {
             forCellReuseIdentifier: DividerCell.identifier
         )
         
+        self.tableView.register(
+            TextFieldCell.self,
+            forCellReuseIdentifier: TextFieldCell.identifier
+        )
+        
+        
         self.tableView.dataSource = self
         self.tableView.delegate = self
+        
+        // NOTE: put this in keynboard manager class
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(MainVC.keyboardWillShow),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+        
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(MainVC.keyboardWillHide),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
     }
     
     // MARK: Stored Properties
@@ -90,7 +136,7 @@ extension MainVC: UITableViewDataSource {
     public func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         switch self.tableViewData[section].cellType {
-            case .header, .normal, .group, .divider:
+            case .header, .normal, .group, .divider, .textField:
                 return 1
             case .picker:
                 switch self.tableViewData[section].isOpened &&
@@ -127,6 +173,22 @@ extension MainVC: UITableViewDataSource {
             cell.configure(title: model.title, time: "")
             
             return cell
+            
+        case .textField:
+            
+            let cell: TextFieldCell = self.create(cell: TextFieldCell()) as! TextFieldCell
+            cell.selectionStyle = .none
+            
+            guard
+                let model: TextFieldData = self.tableViewData[indexPath.section].sectionData as? TextFieldData
+                else {
+                    return UITableViewCell()
+            }
+            
+            cell.configure(with: model)
+            
+            return cell
+            
         case .divider:
             let cell: DividerCell = self.create(cell: DividerCell()) as! DividerCell
             cell.selectionStyle = .none
@@ -164,7 +226,7 @@ extension MainVC: UITableViewDataSource {
         
         switch self.tableViewData[indexPath.section].cellType {
             
-        case .divider, .group, .header, .normal:
+        case .divider, .group, .header, .normal, .textField:
             height = 45.0
         case .picker:
             switch indexPath.row == 0 {
@@ -220,6 +282,21 @@ extension MainVC {
         
         self.tableView.reloadData()
     }
+    
+    @objc func keyboardWillShow(notification: Notification) {
+        guard let info: CGRect = notification.userInfo!["UIKeyboardFrameEndUserInfoKey"] as? CGRect else { return }
+        
+        self.rootView.layoutIfNeeded()
+        
+        self.rootView.updateLayoutTableView(with: info)
+        
+    }
+    
+    @objc func keyboardWillHide(){
+        self.rootView.layoutIfNeeded()
+        self.rootView.keyBoardWillHide()
+    }
+
 }
 
 // MARK: - Helper Functions

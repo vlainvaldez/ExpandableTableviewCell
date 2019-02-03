@@ -19,7 +19,15 @@ public struct BuildingSiteData: AssemblyData {
     var title: String
 }
 
-struct CellData {
+public class TextFieldData: AssemblyData {
+    var text: String
+    
+    public init(text: String) {
+        self.text = text
+    }
+}
+
+class CellData {
     var isOpened: Bool
     var title: String
     var sectionData: AssemblyData?
