@@ -13,7 +13,6 @@ public final class MainVC: UIViewController {
     // MARK: Initializers
     public init() {
         super.init(nibName: nil, bundle: nil)
-        
     }
     
     public required init?(coder aDecoder: NSCoder) {
@@ -24,6 +23,7 @@ public final class MainVC: UIViewController {
     public override func loadView() {
         super.loadView()
         self.view = MainView()
+        self.keyboardManager = KeyboardManager(tableView: self.tableView)
     }
     
     public override func viewDidLoad() {
@@ -100,23 +100,32 @@ public final class MainVC: UIViewController {
         self.tableView.delegate = self
         
         // NOTE: put this in keynboard manager class
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(MainVC.keyboardWillShow),
-            name: UIResponder.keyboardWillShowNotification,
-            object: nil
-        )
+//        NotificationCenter.default.addObserver(
+//            self,
+//            selector: #selector(MainVC.keyboardWillShow),
+//            name: UIResponder.keyboardWillShowNotification,
+//            object: nil
+//        )
+//
+//        NotificationCenter.default.addObserver(
+//            self,
+//            selector: #selector(MainVC.keyboardWillHide),
+//            name: UIResponder.keyboardWillHideNotification,
+//            object: nil
+//        )
         
-        NotificationCenter.default.addObserver(
-            self,
-            selector: #selector(MainVC.keyboardWillHide),
-            name: UIResponder.keyboardWillHideNotification,
-            object: nil
-        )
+        self.keyboardManager?.beginObservingKeyboard()
+    }
+    
+    deinit {
+        self.keyboardManager?.endObservingKeyboard()
     }
     
     // MARK: Stored Properties
-    var tableViewData: [CellData] = [CellData]()
+    private var tableViewData: [CellData] = [CellData]()
+    private var oldBottomInsets: CGFloat?
+    private var keyboardManager: KeyboardManager?
+    
 
 }
 
@@ -283,19 +292,38 @@ extension MainVC {
         self.tableView.reloadData()
     }
     
-    @objc func keyboardWillShow(notification: Notification) {
-        guard let info: CGRect = notification.userInfo!["UIKeyboardFrameEndUserInfoKey"] as? CGRect else { return }
-        
-        self.rootView.layoutIfNeeded()
-        
-        self.rootView.updateLayoutTableView(with: info)
-        
-    }
-    
-    @objc func keyboardWillHide(){
-        self.rootView.layoutIfNeeded()
-        self.rootView.keyBoardWillHide()
-    }
+//    @objc func keyboardWillShow(notification: Notification) {
+//        guard let info: CGRect = notification.userInfo!["UIKeyboardFrameEndUserInfoKey"] as? CGRect else { return }
+//
+//        self.rootView.layoutIfNeeded()
+//
+//        self.oldBottomInsets = self.tableView.contentInset.bottom
+//
+//        let contentInsets: UIEdgeInsets = UIEdgeInsets(
+//            top: self.tableView.contentInset.top,
+//            left: 0.0,
+//            bottom: info.height,
+//            right: 0.0
+//        )
+//
+//        self.tableView.contentInset = contentInsets
+//        self.tableView.scrollIndicatorInsets = contentInsets
+//
+//    }
+//
+//    @objc func keyboardWillHide(){
+//        self.rootView.layoutIfNeeded()
+//
+//        let contentInsets: UIEdgeInsets = UIEdgeInsets(
+//            top: self.tableView.contentInset.top,
+//            left: 0.0,
+//            bottom: 0.0,
+//            right: 0.0
+//        )
+//
+//        self.tableView.contentInset = contentInsets
+//        self.tableView.scrollIndicatorInsets = contentInsets
+//    }
 
 }
 
